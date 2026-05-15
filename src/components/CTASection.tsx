@@ -109,7 +109,7 @@ export function CTASection() {
 
       {/* Floating WhatsApp */}
       <a
-        href="https://wa.me/910000000000"
+        href={`https://wa.me/${CONTACT_PHONE_INTL}`}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
