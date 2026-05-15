@@ -34,6 +34,14 @@ export function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
+  const [badgeOffset, setBadgeOffset] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setBadgeOffset((o) => (o + 1) % badgeLabels.length);
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <section id="home" ref={ref} className="relative min-h-[110vh] overflow-hidden gradient-sky">
       {/* Background sky + sun glow */}
