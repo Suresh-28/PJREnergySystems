@@ -1,13 +1,28 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Calculator } from "lucide-react";
 import heroImg from "@/assets/hero-rooftop.jpg";
 
-const badges = [
-  { label: "₹78,000 Subsidy", x: "-32%", y: "-30%", delay: 0.2 },
-  { label: "EMI Available", x: "30%", y: "-38%", delay: 0.35 },
-  { label: "25 Year Warranty", x: "34%", y: "20%", delay: 0.5 },
-  { label: "Net Metering Enabled", x: "-36%", y: "12%", delay: 0.65 },
+const badgeSlots = [
+  { x: "-32%", y: "-30%" },
+  { x: "30%", y: "-38%" },
+  { x: "34%", y: "20%" },
+  { x: "-36%", y: "12%" },
+];
+
+const badgeLabels = [
+  "₹78,000 Subsidy",
+  "EMI Available",
+  "25 Year Warranty",
+  "Net Metering Enabled",
+  "PM Surya Ghar Approved",
+  "Zero Down Payment",
+  "Save up to 90%",
+  "Free Site Survey",
+  "Tier-1 Solar Panels",
+  "5 Year Service",
+  "Quick 7-Day Install",
+  "MNRE Certified",
 ];
 
 export function Hero() {
