@@ -1,13 +1,28 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Calculator } from "lucide-react";
 import heroImg from "@/assets/hero-rooftop.jpg";
 
-const badges = [
-  { label: "₹78,000 Subsidy", x: "-32%", y: "-30%", delay: 0.2 },
-  { label: "EMI Available", x: "30%", y: "-38%", delay: 0.35 },
-  { label: "25 Year Warranty", x: "34%", y: "20%", delay: 0.5 },
-  { label: "Net Metering Enabled", x: "-36%", y: "12%", delay: 0.65 },
+const badgeSlots = [
+  { x: "-32%", y: "-30%" },
+  { x: "30%", y: "-38%" },
+  { x: "34%", y: "20%" },
+  { x: "-36%", y: "12%" },
+];
+
+const badgeLabels = [
+  "₹78,000 Subsidy",
+  "EMI Available",
+  "25 Year Warranty",
+  "Net Metering Enabled",
+  "PM Surya Ghar Approved",
+  "Zero Down Payment",
+  "Save up to 90%",
+  "Free Site Survey",
+  "Tier-1 Solar Panels",
+  "5 Year Service",
+  "Quick 7-Day Install",
+  "MNRE Certified",
 ];
 
 export function Hero() {
@@ -18,6 +33,14 @@ export function Hero() {
   const yFg = useTransform(scrollYProgress, [0, 1], ["0%", "-40%"]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  const [badgeOffset, setBadgeOffset] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setBadgeOffset((o) => (o + 1) % badgeLabels.length);
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
 
   return (
     <section id="home" ref={ref} className="relative min-h-[110vh] overflow-hidden gradient-sky">
@@ -108,24 +131,38 @@ export function Hero() {
       {/* Floating offer badges */}
       <div className="absolute inset-0 z-30 pointer-events-none hidden lg:block">
         <div className="relative w-full h-full max-w-7xl mx-auto">
-          {badges.map((b, i) => (
-            <motion.div
-              key={b.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: b.delay, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute top-1/2 left-1/2"
-              style={{ transform: `translate(calc(-50% + ${b.x}), calc(-50% + ${b.y}))` }}
-            >
+          {badgeSlots.map((slot, i) => {
+            const label = badgeLabels[(badgeOffset + i) % badgeLabels.length];
+            return (
               <motion.div
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 4 + i, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
-                className="glass shadow-float rounded-full px-4 py-2 text-xs font-medium tracking-tight"
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + i * 0.15, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute top-1/2 left-1/2"
+                style={{ transform: `translate(calc(-50% + ${slot.x}), calc(-50% + ${slot.y}))` }}
               >
-                {b.label}
+                <motion.div
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 4 + i, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
+                  className="glass shadow-float rounded-full px-4 py-2 text-xs font-medium tracking-tight overflow-hidden"
+                >
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={label}
+                      initial={{ y: 12, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -12, opacity: 0 }}
+                      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                      className="inline-block whitespace-nowrap"
+                    >
+                      {label}
+                    </motion.span>
+                  </AnimatePresence>
+                </motion.div>
               </motion.div>
-            </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
