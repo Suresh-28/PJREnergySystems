@@ -59,14 +59,32 @@ export function CTASection() {
           transition={{ delay: 0.3, duration: 0.9 }}
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3"
         >
-          <a href="#contact" className="group inline-flex items-center gap-2 bg-background text-foreground rounded-full px-6 py-3 text-sm font-medium hover:opacity-90 transition-all">
-            Book Free Consultation
+          <a href={`tel:+91${CONTACT_PHONE}`} className="group inline-flex items-center gap-2 bg-background text-foreground rounded-full px-6 py-3 text-sm font-medium hover:opacity-90 transition-all">
+            <Phone className="w-4 h-4" strokeWidth={1.5} />
+            Call {CONTACT_PHONE}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" strokeWidth={1.5} />
           </a>
           <a href="#calculator" className="inline-flex items-center gap-2 glass-dark rounded-full px-6 py-3 text-sm font-medium text-background hover:bg-background/10 transition-all">
             <Calculator className="w-4 h-4" strokeWidth={1.5} />
             Calculate Savings
           </a>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 0.9 }}
+          className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-background/70 font-light"
+        >
+          <span className="inline-flex items-center gap-2">
+            <MapPin className="w-4 h-4" strokeWidth={1.5} />
+            {CONTACT_ADDRESS}
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <Phone className="w-4 h-4" strokeWidth={1.5} />
+            +91 {CONTACT_PHONE}
+          </span>
         </motion.div>
 
         {/* Mini inquiry form */}
