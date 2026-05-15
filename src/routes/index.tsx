@@ -1,26 +1,51 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SmoothScroll } from "@/components/SmoothScroll";
+import { Navbar } from "@/components/Navbar";
+import { Hero } from "@/components/Hero";
+import { OffersSection } from "@/components/OffersSection";
+import { FeaturedPackage } from "@/components/FeaturedPackage";
+import { SubsidySection } from "@/components/SubsidySection";
+import { CalculatorSection } from "@/components/CalculatorSection";
+import { HowItWorks } from "@/components/HowItWorks";
+import { Projects } from "@/components/Projects";
+import { Packages } from "@/components/Packages";
+import { TrustSection } from "@/components/TrustSection";
+import { InstallTimeline } from "@/components/InstallTimeline";
+import { FAQ } from "@/components/FAQ";
+import { CTASection, Footer } from "@/components/CTASection";
 
 export const Route = createFileRoute("/")({
   component: Index,
+  head: () => ({
+    meta: [
+      { title: "Solara — Karo Bill Zero · Premium Rooftop Solar" },
+      { name: "description", content: "Premium rooftop solar systems for modern homes. ₹78,000 PM Surya Ghar subsidy, EMI support, net metering, and 25-year warranty." },
+      { property: "og:title", content: "Solara — Karo Bill Zero" },
+      { property: "og:description", content: "Smart rooftop solar systems designed for modern homes." },
+    ],
+  }),
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
 function Index() {
-  return <PlaceholderIndex />;
+  return (
+    <>
+      <SmoothScroll />
+      <Navbar />
+      <main id="home">
+        <Hero />
+        <OffersSection />
+        <FeaturedPackage />
+        <SubsidySection />
+        <CalculatorSection />
+        <HowItWorks />
+        <Projects />
+        <Packages />
+        <TrustSection />
+        <InstallTimeline />
+        <FAQ />
+        <CTASection />
+        <Footer />
+      </main>
+    </>
+  );
 }
