@@ -18,10 +18,14 @@ export function SubsidySection() {
 
   return (
     <section ref={ref} className="relative py-32 md:py-44 px-6 overflow-hidden gradient-warm">
-      <motion.div style={{ y: yBlur1 }} className="absolute -top-32 -left-32 w-[40rem] h-[40rem] rounded-full blur-3xl opacity-50"
-        style={{ background: "radial-gradient(circle, oklch(0.83 0.04 80 / 0.5), transparent 60%)" }} />
-      <motion.div style={{ y: yBlur2 }} className="absolute -bottom-32 -right-32 w-[40rem] h-[40rem] rounded-full blur-3xl opacity-40"
-        style={{ background: "radial-gradient(circle, oklch(0.62 0.045 130 / 0.3), transparent 60%)" }} />
+      <motion.div
+        style={{ y: yBlur1, background: "radial-gradient(circle, oklch(0.83 0.04 80 / 0.5), transparent 60%)" }}
+        className="absolute -top-32 -left-32 w-[40rem] h-[40rem] rounded-full blur-3xl opacity-50"
+      />
+      <motion.div
+        style={{ y: yBlur2, background: "radial-gradient(circle, oklch(0.62 0.045 130 / 0.3), transparent 60%)" }}
+        className="absolute -bottom-32 -right-32 w-[40rem] h-[40rem] rounded-full blur-3xl opacity-40"
+      />
 
       <div className="relative max-w-6xl mx-auto">
         <Reveal>
