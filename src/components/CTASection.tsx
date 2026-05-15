@@ -1,6 +1,10 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { ArrowRight, Calculator, MessageCircle } from "lucide-react";
+import { ArrowRight, Calculator, MessageCircle, Phone, MapPin } from "lucide-react";
+
+const CONTACT_PHONE = "8688584825";
+const CONTACT_PHONE_INTL = "918688584825";
+const CONTACT_ADDRESS = "Jangaon, Telangana";
 
 export function CTASection() {
   const ref = useRef<HTMLElement>(null);
