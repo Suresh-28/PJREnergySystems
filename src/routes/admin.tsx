@@ -168,7 +168,8 @@ function ProjectsAdmin() {
       });
       if (insErr) throw insErr;
       setTitle(""); setMeta(""); setFile(null);
-      (document.getElementById("file-input") as HTMLInputElement | null)?.value && ((document.getElementById("file-input") as HTMLInputElement).value = "");
+      const input = document.getElementById("file-input") as HTMLInputElement | null;
+      if (input) input.value = "";
       await load();
     } catch (e: any) {
       setErr(e.message ?? "Failed to add");
