@@ -83,10 +83,12 @@ function AuthForm() {
     e.preventDefault();
     setBusy(true);
     setMsg(null);
-    const fn = mode === "in" ? supabase.auth.signInWithPassword : supabase.auth.signUp;
-    const { error } = await fn({ email, password });
+    const { error } =
+      mode === "in"
+        ? await supabase.auth.signInWithPassword({ email, password })
+        : await supabase.auth.signUp({ email, password });
     if (error) setMsg(error.message);
-    else if (mode === "up") setMsg("Check your email to confirm, then sign in.");
+    else if (mode === "up") setMsg("Account created. If email confirmation is on, verify and then sign in.");
     setBusy(false);
   }
 
