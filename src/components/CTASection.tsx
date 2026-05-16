@@ -107,17 +107,6 @@ export function CTASection() {
         </motion.form>
       </div>
 
-      {/* Floating WhatsApp */}
-      <a
-        href={`https://wa.me/${CONTACT_PHONE_INTL}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Chat on WhatsApp"
-        className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-elegant transition-transform hover:scale-105"
-        style={{ backgroundColor: "oklch(0.62 0.045 130)" }}
-      >
-        <MessageCircle className="w-6 h-6 text-background" strokeWidth={1.5} />
-      </a>
     </section>
   );
 }
