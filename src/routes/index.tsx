@@ -13,6 +13,7 @@ import { TrustSection } from "@/components/TrustSection";
 import { InstallTimeline } from "@/components/InstallTimeline";
 import { FAQ } from "@/components/FAQ";
 import { CTASection, Footer } from "@/components/CTASection";
+import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 
 export const Route = createFileRoute("/")({
   component: Index,
