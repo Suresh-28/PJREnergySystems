@@ -1,17 +1,24 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Reveal, SectionLabel } from "./Reveal";
+import { supabase } from "@/integrations/supabase/client";
 import p1 from "@/assets/project-1.jpg";
 import p2 from "@/assets/project-2.jpg";
 import p3 from "@/assets/project-3.jpg";
 import p4 from "@/assets/project-4.jpg";
 
-const items = [
-  { img: p1, title: "Banjara Hills Residence", meta: "5 KW · Hyderabad" },
-  { img: p2, title: "Coastal Villa", meta: "8 KW · Goa" },
-  { img: p3, title: "Palm Court House", meta: "3 KW · Pune" },
-  { img: p4, title: "Lakeside Modern", meta: "10 KW · Bengaluru" },
-];
+type Project = { id: string; title: string; meta: string; image_url: string };
+
+const SEED_MAP: Record<string, string> = {
+  "/seed/project-1.jpg": p1,
+  "/seed/project-2.jpg": p2,
+  "/seed/project-3.jpg": p3,
+  "/seed/project-4.jpg": p4,
+};
+
+function resolveImg(url: string) {
+  return SEED_MAP[url] ?? url;
+}
 
 function StackItem({ img, title, meta, index }: { img: string; title: string; meta: string; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -48,6 +55,18 @@ function StackItem({ img, title, meta, index }: { img: string; title: string; me
 }
 
 export function Projects() {
+  const [items, setItems] = useState<Project[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("selected_projects")
+      .select("id,title,meta,image_url")
+      .order("position", { ascending: true })
+      .then(({ data }) => {
+        if (data && data.length) setItems(data as Project[]);
+      });
+  }, []);
+
   return (
     <section id="projects" className="relative py-32 md:py-44 px-6 bg-background">
       <div className="max-w-7xl mx-auto">
@@ -60,7 +79,7 @@ export function Projects() {
 
         <div className="mt-20 max-w-5xl mx-auto">
           {items.map((it, i) => (
-            <StackItem key={it.title} {...it} index={i} />
+            <StackItem key={it.id} img={resolveImg(it.image_url)} title={it.title} meta={it.meta} index={i} />
           ))}
         </div>
       </div>
