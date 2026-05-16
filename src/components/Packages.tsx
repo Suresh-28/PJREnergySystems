@@ -58,12 +58,14 @@ export function Packages() {
                 </ul>
 
                 <a
-                  href="#contact"
+                  href={`https://wa.me/918688584825?text=${encodeURIComponent(`Hi, I'd like a quote for the ${p.kw} rooftop solar package.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`mt-8 inline-flex w-full items-center justify-center rounded-full px-4 py-2.5 text-sm font-medium transition-opacity ${
                     p.featured ? "bg-background text-foreground hover:opacity-90" : "bg-foreground text-background hover:opacity-90"
                   }`}
                 >
-                  Get a Quote
+                  Get a Quote on WhatsApp
                 </a>
               </motion.div>
             </Reveal>
