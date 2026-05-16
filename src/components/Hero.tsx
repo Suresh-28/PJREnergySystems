@@ -3,13 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Calculator } from "lucide-react";
 import heroImg from "@/assets/hero-rooftop.jpg";
 
-const badgeSlots = [
-  { x: "-32%", y: "-30%" },
-  { x: "30%", y: "-38%" },
-  { x: "34%", y: "20%" },
-  { x: "-36%", y: "12%" },
-];
-
 const badgeLabels = [
   "₹78,000 Subsidy",
   "EMI Available",
@@ -117,8 +110,8 @@ export function Hero() {
           transition={{ delay: 0.7, duration: 0.9 }}
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3"
         >
-          <a href="#contact" className="group inline-flex items-center gap-2 bg-foreground text-background rounded-full px-6 py-3 text-sm font-medium hover:opacity-90 transition-all">
-            Get Free Consultation
+          <a href="https://wa.me/918688584825?text=Hi%2C%20I%27d%20like%20a%20free%20rooftop%20solar%20consultation." target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 bg-foreground text-background rounded-full px-6 py-3 text-sm font-medium hover:opacity-90 transition-all">
+            Get Free Consultation on WhatsApp
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" strokeWidth={1.5} />
           </a>
           <a href="#calculator" className="inline-flex items-center gap-2 glass rounded-full px-6 py-3 text-sm font-medium hover:bg-white/80 transition-all">
@@ -128,42 +121,32 @@ export function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Floating offer badges */}
-      <div className="absolute inset-0 z-30 pointer-events-none hidden lg:block">
-        <div className="relative w-full h-full max-w-7xl mx-auto">
-          {badgeSlots.map((slot, i) => {
-            const label = badgeLabels[(badgeOffset + i) % badgeLabels.length];
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.15, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute top-1/2 left-1/2"
-                style={{ transform: `translate(calc(-50% + ${slot.x}), calc(-50% + ${slot.y}))` }}
+      {/* Single rotating offer badge */}
+      <div className="relative z-30 mt-12 flex justify-center px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <motion.div
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            className="glass shadow-float rounded-full px-5 py-2.5 text-xs md:text-sm font-medium tracking-tight overflow-hidden"
+          >
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={badgeLabels[badgeOffset]}
+                initial={{ y: 14, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -14, opacity: 0 }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                className="inline-block whitespace-nowrap"
               >
-                <motion.div
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 4 + i, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
-                  className="glass shadow-float rounded-full px-4 py-2 text-xs font-medium tracking-tight overflow-hidden"
-                >
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={label}
-                      initial={{ y: 12, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: -12, opacity: 0 }}
-                      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                      className="inline-block whitespace-nowrap"
-                    >
-                      {label}
-                    </motion.span>
-                  </AnimatePresence>
-                </motion.div>
-              </motion.div>
-            );
-          })}
-        </div>
+                {badgeLabels[badgeOffset]}
+              </motion.span>
+            </AnimatePresence>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
