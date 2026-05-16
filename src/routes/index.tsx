@@ -47,6 +47,7 @@ function Index() {
         <CTASection />
         <Footer />
       </main>
+      <WhatsAppFloat />
     </>
   );
 }
