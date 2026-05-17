@@ -1,24 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Reveal, SectionLabel } from "./Reveal";
-import { supabase } from "@/integrations/supabase/client";
-import p1 from "@/assets/project-1.jpg";
-import p2 from "@/assets/project-2.jpg";
-import p3 from "@/assets/project-3.jpg";
-import p4 from "@/assets/project-4.jpg";
-
-type Project = { id: string; title: string; meta: string; image_url: string };
-
-const SEED_MAP: Record<string, string> = {
-  "/seed/project-1.jpg": p1,
-  "/seed/project-2.jpg": p2,
-  "/seed/project-3.jpg": p3,
-  "/seed/project-4.jpg": p4,
-};
-
-function resolveImg(url: string) {
-  return SEED_MAP[url] ?? url;
-}
+import { loadProjects, PROJECTS_STORAGE_KEY, type StoredProject } from "@/lib/projects-store";
 
 function StackItem({ img, title, meta, index }: { img: string; title: string; meta: string; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -55,16 +38,17 @@ function StackItem({ img, title, meta, index }: { img: string; title: string; me
 }
 
 export function Projects() {
-  const [items, setItems] = useState<Project[]>([]);
+  const [items, setItems] = useState<StoredProject[]>(() => loadProjects());
 
   useEffect(() => {
-    supabase
-      .from("selected_projects")
-      .select("id,title,meta,image_url")
-      .order("position", { ascending: true })
-      .then(({ data }) => {
-        if (data && data.length) setItems(data as Project[]);
-      });
+    const refresh = () => setItems(loadProjects());
+    window.addEventListener("storage", (e) => {
+      if (e.key === PROJECTS_STORAGE_KEY) refresh();
+    });
+    window.addEventListener("projects:updated", refresh);
+    return () => {
+      window.removeEventListener("projects:updated", refresh);
+    };
   }, []);
 
   return (
@@ -79,7 +63,7 @@ export function Projects() {
 
         <div className="mt-20 max-w-5xl mx-auto">
           {items.map((it, i) => (
-            <StackItem key={it.id} img={resolveImg(it.image_url)} title={it.title} meta={it.meta} index={i} />
+            <StackItem key={it.id} img={it.image} title={it.title} meta={it.meta} index={i} />
           ))}
         </div>
       </div>
