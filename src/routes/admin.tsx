@@ -26,38 +26,19 @@ type Project = {
 
 function AdminPage() {
   const [session, setSession] = useState<Session | null>(null);
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
       setSession(s);
-      if (!s) {
-        setIsAdmin(false);
-        setLoading(false);
-      } else {
-        checkRole(s.user.id);
-      }
+      setLoading(false);
     });
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
-      if (data.session) checkRole(data.session.user.id);
-      else setLoading(false);
+      setLoading(false);
     });
     return () => sub.subscription.unsubscribe();
   }, []);
-
-  async function checkRole(userId: string) {
-    setLoading(true);
-    const { data } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId)
-      .eq("role", "admin")
-      .maybeSingle();
-    setIsAdmin(!!data);
-    setLoading(false);
-  }
 
   if (loading) {
     return (
@@ -68,7 +49,6 @@ function AdminPage() {
   }
 
   if (!session) return <AuthForm />;
-  if (!isAdmin) return <NotAdmin email={session.user.email ?? ""} />;
   return <ProjectsAdmin />;
 }
 
