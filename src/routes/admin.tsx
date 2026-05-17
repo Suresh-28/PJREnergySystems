@@ -73,8 +73,7 @@ function AdminPage() {
 }
 
 function AuthForm() {
-  const [mode, setMode] = useState<"in" | "up">("in");
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
@@ -83,12 +82,12 @@ function AuthForm() {
     e.preventDefault();
     setBusy(true);
     setMsg(null);
-    const { error } =
-      mode === "in"
-        ? await supabase.auth.signInWithPassword({ email, password })
-        : await supabase.auth.signUp({ email, password });
-    if (error) setMsg(error.message);
-    else if (mode === "up") setMsg("Account created. If email confirmation is on, verify and then sign in.");
+    // Allow signing in with username "admin" — map it to the seeded email.
+    const email = identifier.includes("@")
+      ? identifier.trim()
+      : `${identifier.trim().toLowerCase()}@solara.local`;
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) setMsg("Invalid username or password.");
     setBusy(false);
   }
 
@@ -96,19 +95,16 @@ function AuthForm() {
     <div className="min-h-screen grid place-items-center bg-background px-6">
       <form onSubmit={submit} className="w-full max-w-sm space-y-4 border border-border rounded-2xl p-8 shadow-soft">
         <div>
-          <h1 className="text-2xl font-light tracking-tight">Admin {mode === "in" ? "sign in" : "sign up"}</h1>
+          <h1 className="text-2xl font-light tracking-tight">Admin sign in</h1>
           <p className="text-sm text-muted-foreground font-light mt-1">Manage selected projects</p>
         </div>
-        <Input type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-        <Input type="password" placeholder="Password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} />
-        {msg && <p className="text-xs text-muted-foreground">{msg}</p>}
+        <Input type="text" placeholder="Username" required autoComplete="username" value={identifier} onChange={(e) => setIdentifier(e.target.value)} />
+        <Input type="password" placeholder="Password" required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        {msg && <p className="text-xs text-destructive">{msg}</p>}
         <Button type="submit" disabled={busy} className="w-full">
           {busy && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-          {mode === "in" ? "Sign in" : "Create account"}
+          Sign in
         </Button>
-        <button type="button" onClick={() => setMode(mode === "in" ? "up" : "in")} className="w-full text-xs text-muted-foreground hover:text-foreground">
-          {mode === "in" ? "Need an account? Sign up" : "Have an account? Sign in"}
-        </button>
       </form>
     </div>
   );
