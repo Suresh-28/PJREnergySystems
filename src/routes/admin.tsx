@@ -1,10 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import type { Session } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, LogOut, Plus, Trash2, Upload } from "lucide-react";
+import { Loader2, LogOut, Plus, Trash2, RotateCcw } from "lucide-react";
+import {
+  loadProjects,
+  saveProjects,
+  resetProjects,
+  fileToCompressedDataUrl,
+  type StoredProject,
+} from "@/lib/projects-store";
 
 export const Route = createFileRoute("/admin")({
   component: AdminPage,
@@ -16,31 +21,20 @@ export const Route = createFileRoute("/admin")({
   }),
 });
 
-type Project = {
-  id: string;
-  title: string;
-  meta: string;
-  image_url: string;
-  position: number;
-};
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "Solar@2026";
+const SESSION_KEY = "solara.admin.session";
 
 function AdminPage() {
-  const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [authed, setAuthed] = useState(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
-      setSession(s);
-      setLoading(false);
-    });
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setLoading(false);
-    });
-    return () => sub.subscription.unsubscribe();
+    setAuthed(sessionStorage.getItem(SESSION_KEY) === "1");
+    setReady(true);
   }, []);
 
-  if (loading) {
+  if (!ready) {
     return (
       <div className="min-h-screen grid place-items-center bg-background">
         <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
@@ -48,27 +42,23 @@ function AdminPage() {
     );
   }
 
-  if (!session) return <AuthForm />;
-  return <ProjectsAdmin />;
+  if (!authed) return <AuthForm onSuccess={() => setAuthed(true)} />;
+  return <ProjectsAdmin onSignOut={() => { sessionStorage.removeItem(SESSION_KEY); setAuthed(false); }} />;
 }
 
-function AuthForm() {
-  const [identifier, setIdentifier] = useState("");
+function AuthForm({ onSuccess }: { onSuccess: () => void }) {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
 
-  async function submit(e: FormEvent) {
+  function submit(e: FormEvent) {
     e.preventDefault();
-    setBusy(true);
-    setMsg(null);
-    // Allow signing in with username "admin" — map it to the seeded email.
-    const email = identifier.includes("@")
-      ? identifier.trim()
-      : `${identifier.trim().toLowerCase()}@solara.local`;
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setMsg("Invalid username or password.");
-    setBusy(false);
+    if (username.trim().toLowerCase() === ADMIN_USER && password === ADMIN_PASS) {
+      sessionStorage.setItem(SESSION_KEY, "1");
+      onSuccess();
+    } else {
+      setMsg("Invalid username or password.");
+    }
   }
 
   return (
@@ -78,54 +68,24 @@ function AuthForm() {
           <h1 className="text-2xl font-light tracking-tight">Admin sign in</h1>
           <p className="text-sm text-muted-foreground font-light mt-1">Manage selected projects</p>
         </div>
-        <Input type="text" placeholder="Username" required autoComplete="username" value={identifier} onChange={(e) => setIdentifier(e.target.value)} />
+        <Input type="text" placeholder="Username" required autoComplete="username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <Input type="password" placeholder="Password" required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
         {msg && <p className="text-xs text-destructive">{msg}</p>}
-        <Button type="submit" disabled={busy} className="w-full">
-          {busy && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-          Sign in
-        </Button>
+        <Button type="submit" className="w-full">Sign in</Button>
       </form>
     </div>
   );
 }
 
-function NotAdmin({ email }: { email: string }) {
-  return (
-    <div className="min-h-screen grid place-items-center bg-background px-6 text-center">
-      <div className="max-w-md space-y-4">
-        <h1 className="text-2xl font-light tracking-tight">Not an admin</h1>
-        <p className="text-sm text-muted-foreground font-light">
-          Signed in as <b>{email}</b>. Ask an admin to grant you the admin role in <code className="text-xs">user_roles</code>.
-        </p>
-        <Button variant="outline" onClick={() => supabase.auth.signOut()}>Sign out</Button>
-      </div>
-    </div>
-  );
-}
-
-function ProjectsAdmin() {
-  const [items, setItems] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  // form
+function ProjectsAdmin({ onSignOut }: { onSignOut: () => void }) {
+  const [items, setItems] = useState<StoredProject[]>([]);
   const [title, setTitle] = useState("");
   const [meta, setMeta] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  async function load() {
-    setLoading(true);
-    const { data } = await supabase
-      .from("selected_projects")
-      .select("*")
-      .order("position", { ascending: true });
-    setItems((data ?? []) as Project[]);
-    setLoading(false);
-  }
-
-  useEffect(() => { load(); }, []);
+  useEffect(() => { setItems(loadProjects()); }, []);
 
   async function add(e: FormEvent) {
     e.preventDefault();
@@ -133,44 +93,52 @@ function ProjectsAdmin() {
     if (!file) { setErr("Please choose an image."); return; }
     setSaving(true);
     try {
-      const ext = file.name.split(".").pop();
-      const path = `${crypto.randomUUID()}.${ext}`;
-      const { error: upErr } = await supabase.storage.from("project-images").upload(path, file);
-      if (upErr) throw upErr;
-      const { data: pub } = supabase.storage.from("project-images").getPublicUrl(path);
-      const nextPos = (items[items.length - 1]?.position ?? 0) + 1;
-      const { error: insErr } = await supabase.from("selected_projects").insert({
-        title, meta, image_url: pub.publicUrl, position: nextPos,
-      });
-      if (insErr) throw insErr;
+      const dataUrl = await fileToCompressedDataUrl(file);
+      const next: StoredProject[] = [
+        ...items,
+        { id: crypto.randomUUID(), title, meta, image: dataUrl },
+      ];
+      saveProjects(next);
+      setItems(next);
       setTitle(""); setMeta(""); setFile(null);
       const input = document.getElementById("file-input") as HTMLInputElement | null;
       if (input) input.value = "";
-      await load();
     } catch (e: any) {
-      setErr(e.message ?? "Failed to add");
+      setErr(e?.message ?? "Failed to add. The image may be too large for browser storage.");
     } finally {
       setSaving(false);
     }
   }
 
-  async function remove(id: string) {
+  function remove(id: string) {
     if (!confirm("Delete this project?")) return;
-    await supabase.from("selected_projects").delete().eq("id", id);
-    load();
+    const next = items.filter((p) => p.id !== id);
+    saveProjects(next);
+    setItems(next);
+  }
+
+  function resetAll() {
+    if (!confirm("Reset to the default starter projects?")) return;
+    resetProjects();
+    setItems(loadProjects());
   }
 
   return (
     <div className="min-h-screen bg-background px-6 py-10">
       <div className="max-w-4xl mx-auto">
-        <header className="flex items-center justify-between mb-10">
+        <header className="flex items-center justify-between mb-10 gap-4">
           <div>
             <h1 className="text-3xl font-light tracking-tight">Selected Projects</h1>
-            <p className="text-sm text-muted-foreground font-light">Manage the gallery shown on the homepage.</p>
+            <p className="text-sm text-muted-foreground font-light">Saved in this browser only — no database.</p>
           </div>
-          <Button variant="outline" size="sm" onClick={() => supabase.auth.signOut()}>
-            <LogOut className="w-4 h-4 mr-2" /> Sign out
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={resetAll}>
+              <RotateCcw className="w-4 h-4 mr-2" /> Reset
+            </Button>
+            <Button variant="outline" size="sm" onClick={onSignOut}>
+              <LogOut className="w-4 h-4 mr-2" /> Sign out
+            </Button>
+          </div>
         </header>
 
         <form onSubmit={add} className="border border-border rounded-2xl p-6 space-y-3 mb-10">
@@ -186,13 +154,12 @@ function ProjectsAdmin() {
         </form>
 
         <div className="space-y-3">
-          {loading && <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />}
-          {!loading && items.length === 0 && (
+          {items.length === 0 && (
             <p className="text-sm text-muted-foreground font-light">No projects yet.</p>
           )}
           {items.map((p) => (
             <div key={p.id} className="flex items-center gap-4 border border-border rounded-xl p-3">
-              <img src={p.image_url} alt={p.title} className="w-20 h-20 object-cover rounded-lg bg-muted" />
+              <img src={p.image} alt={p.title} className="w-20 h-20 object-cover rounded-lg bg-muted" />
               <div className="flex-1 min-w-0">
                 <div className="text-sm font-medium truncate">{p.title}</div>
                 <div className="text-xs text-muted-foreground truncate">{p.meta}</div>
@@ -204,8 +171,8 @@ function ProjectsAdmin() {
           ))}
         </div>
 
-        <p className="mt-10 text-xs text-muted-foreground font-light flex items-center gap-2">
-          <Upload className="w-3.5 h-3.5" /> Images are stored in the project-images bucket.
+        <p className="mt-10 text-xs text-muted-foreground font-light">
+          Note: uploads are stored in this browser's local storage only — they won't appear on other devices or visitors.
         </p>
       </div>
     </div>
