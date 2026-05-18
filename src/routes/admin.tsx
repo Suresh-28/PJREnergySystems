@@ -15,7 +15,7 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
   head: () => ({
     meta: [
-      { title: "Admin · Solara" },
+      { title: "Admin · PJR Energy Systems" },
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),

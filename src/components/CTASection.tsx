@@ -115,7 +115,7 @@ export function Footer() {
   return (
     <footer className="bg-background py-12 px-6 border-t border-border">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground font-light">
-        <div>© {new Date().getFullYear()} Solara. Rooftop solar, considered.</div>
+        <div>© {new Date().getFullYear()} PJR Energy Systems. Rooftop solar, considered.</div>
         <div className="flex gap-6">
           <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
           <a href="#" className="hover:text-foreground transition-colors">Terms</a>

@@ -19,9 +19,9 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Solara — Karo Bill Zero · Premium Rooftop Solar" },
+      { title: "PJR Energy Systems — Karo Bill Zero · Premium Rooftop Solar" },
       { name: "description", content: "Premium rooftop solar systems for modern homes. ₹78,000 PM Surya Ghar subsidy, EMI support, net metering, and 25-year warranty." },
-      { property: "og:title", content: "Solara — Karo Bill Zero" },
+      { property: "og:title", content: "PJR Energy Systems — Karo Bill Zero" },
       { property: "og:description", content: "Smart rooftop solar systems designed for modern homes." },
     ],
   }),
