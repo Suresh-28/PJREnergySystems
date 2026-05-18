@@ -42,7 +42,7 @@ export function Navbar() {
         >
           <a href="#home" className="flex items-center gap-2 px-3 py-1.5 rounded-full">
             <Sun className="w-4 h-4 text-olive" strokeWidth={1.5} />
-            <span className="text-sm font-medium tracking-tight">Solara</span>
+            <span className="text-sm font-medium tracking-tight">PJR Energy Systems</span>
           </a>
           <div className="hidden md:flex items-center gap-0.5 ml-2">
             {links.map((l) => (
@@ -81,7 +81,7 @@ export function Navbar() {
             className="fixed inset-0 z-[60] md:hidden glass-dark"
           >
             <div className="flex items-center justify-between px-6 pt-6">
-              <span className="text-background text-sm font-medium">Solara</span>
+              <span className="text-background text-sm font-medium">PJR Energy Systems</span>
               <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2 text-background">
                 <X className="w-6 h-6" strokeWidth={1.5} />
               </button>
