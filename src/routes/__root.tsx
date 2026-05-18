@@ -72,14 +72,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "PJR Energy Systems" },
+      { name: "description", content: "PJR Energy Systems offers a premium, minimalist rooftop solar landing page experience." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "PJR Energy Systems" },
+      { property: "og:description", content: "PJR Energy Systems offers a premium, minimalist rooftop solar landing page experience." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "PJR Energy Systems" },
+      { name: "twitter:description", content: "PJR Energy Systems offers a premium, minimalist rooftop solar landing page experience." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2fe364bd-b148-42e2-8de8-0e9de09935b6/id-preview-4d59d562--e2f74909-eefa-4b9d-a747-487feca8472a.lovable.app-1779103376177.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2fe364bd-b148-42e2-8de8-0e9de09935b6/id-preview-4d59d562--e2f74909-eefa-4b9d-a747-487feca8472a.lovable.app-1779103376177.png" },
     ],
     links: [
       {
