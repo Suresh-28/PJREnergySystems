@@ -6,6 +6,7 @@ import { OffersSection } from "@/components/OffersSection";
 import { FeaturedPackage } from "@/components/FeaturedPackage";
 import { SubsidySection } from "@/components/SubsidySection";
 import { CalculatorSection } from "@/components/CalculatorSection";
+import { PricingTable } from "@/components/PricingTable";
 import { HowItWorks } from "@/components/HowItWorks";
 import { Projects } from "@/components/Projects";
 import { Packages } from "@/components/Packages";
@@ -37,6 +38,7 @@ function Index() {
         <OffersSection />
         <FeaturedPackage />
         <SubsidySection />
+        <PricingTable />
         <CalculatorSection />
         <HowItWorks />
         <Projects />
