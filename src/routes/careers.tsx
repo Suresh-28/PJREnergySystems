@@ -25,8 +25,8 @@ export const Route = createFileRoute("/careers")({
 const role = {
   title: "Digital Marketing Executive",
   type: "Full-time",
-  location: "Hyderabad, Telangana",
-  experience: "1 – 3 years",
+  location: "Remote",
+  experience: "0 – 1 year",
   summary:
     "Own paid campaigns, organic growth, content, and lead generation for India's fastest-growing rooftop solar brand.",
   responsibilities: [
