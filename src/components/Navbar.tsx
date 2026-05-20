@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 const links = [
-  { label: "Home", href: "#home" },
-  { label: "Benefits", href: "#benefits" },
-  { label: "Savings", href: "#savings" },
-  { label: "Packages", href: "#packages" },
-  { label: "Projects", href: "#projects" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/#home" },
+  { label: "Benefits", href: "/#benefits" },
+  { label: "Pricing", href: "/#pricing" },
+  { label: "Packages", href: "/#packages" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Careers", href: "/careers" },
+  { label: "FAQ", href: "/#faq" },
 ];
 
 export function Navbar() {
