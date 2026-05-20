@@ -25,16 +25,16 @@ export const Route = createFileRoute("/careers")({
 const role = {
   title: "Digital Marketing Executive",
   type: "Full-time",
-  location: "Hyderabad, Telangana",
-  experience: "1 – 3 years",
+  location: "Remote",
+  experience: "0 – 1 year",
   summary:
-    "Own paid campaigns, organic growth, content, and lead generation for India's fastest-growing rooftop solar brand.",
+    "Drive client acquisition and business growth for PJR Energy Systems through field marketing, digital outreach, and relationship building.",
   responsibilities: [
-    "Plan and run Meta Ads, Google Ads, and YouTube campaigns",
-    "Manage SEO, landing pages, and conversion tracking",
-    "Create reels, short-form content, and brand storytelling",
-    "Generate qualified residential and commercial solar leads",
-    "Track KPIs weekly and report on CAC, CTR, and ROAS",
+    "Generate new clients through field marketing, online promotions, cold calling, and referral networks",
+    "Connect with residential and commercial customers to explain services and convert leads into clients",
+    "Handle client communication through calls, WhatsApp, social media, and direct meetings",
+    "Build partnerships with local businesses, contractors, and property owners for business growth",
+    "Follow up with interested customers and maintain strong client relationships for repeat business and referrals",
   ],
 };
 
