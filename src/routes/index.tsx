@@ -12,7 +12,6 @@ import { Packages } from "@/components/Packages";
 import { TrustSection } from "@/components/TrustSection";
 import { InstallTimeline } from "@/components/InstallTimeline";
 import { FAQ } from "@/components/FAQ";
-import { CareersSection } from "@/components/CareersSection";
 import { CTASection, Footer } from "@/components/CTASection";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 
@@ -44,7 +43,6 @@ function Index() {
         <Packages />
         <TrustSection />
         <InstallTimeline />
-        <CareersSection />
         <FAQ />
         <CTASection />
         <Footer />
