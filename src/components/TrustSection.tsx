@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 const trust = [
   {
     icon: ShieldCheck,
-    stat: "25",
+    stat: "5",
     unit: "Years",
-    title: "Panel Performance Warranty",
-    desc: "Tier-1 mono-PERC panels guaranteed to deliver 85%+ output through 2050.",
+    title: "Panel Warranty",
+    desc: "Tier-1 mono-PERC panels with 5-year comprehensive warranty and 25+ year design life, guaranteed to deliver 85%+ output through 2050.",
   },
   {
     icon: Zap,

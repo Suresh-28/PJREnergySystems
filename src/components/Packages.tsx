@@ -3,10 +3,10 @@ import { Reveal, SectionLabel } from "./Reveal";
 import { Check } from "lucide-react";
 
 const packs = [
-  { kw: "3KW", home: "2–3 BHK", gen: "405 units/mo", subsidy: "₹78,000", emi: "From ₹2,400", warranty: "25 yrs" },
-  { kw: "5KW", home: "3–4 BHK", gen: "675 units/mo", subsidy: "₹78,000", emi: "From ₹3,800", warranty: "25 yrs", featured: true },
-  { kw: "8KW", home: "4 BHK / Villa", gen: "1080 units/mo", subsidy: "₹78,000", emi: "From ₹6,200", warranty: "25 yrs" },
-  { kw: "10KW", home: "Large Villa", gen: "1350 units/mo", subsidy: "₹78,000", emi: "From ₹7,800", warranty: "25 yrs" },
+  { kw: "3KW", home: "2–3 BHK", gen: "405 units/mo", subsidy: "₹78,000", emi: "From ₹2,400", warranty: "5 yrs", life: "25 yrs" },
+  { kw: "5KW", home: "3–4 BHK", gen: "675 units/mo", subsidy: "₹78,000", emi: "From ₹3,800", warranty: "5 yrs", life: "25 yrs", featured: true },
+  { kw: "8KW", home: "4 BHK / Villa", gen: "1080 units/mo", subsidy: "₹78,000", emi: "From ₹6,200", warranty: "5 yrs", life: "25 yrs" },
+  { kw: "10KW", home: "Large Villa", gen: "1350 units/mo", subsidy: "₹78,000", emi: "From ₹7,800", warranty: "5 yrs", life: "25 yrs" },
 ];
 
 export function Packages() {
@@ -47,6 +47,7 @@ export function Packages() {
                     ["Subsidy", p.subsidy],
                     ["EMI", p.emi],
                     ["Warranty", p.warranty],
+                    ["Panel Life", p.life],
                   ].map(([k, v]) => (
                     <li key={k} className="flex items-center justify-between gap-4">
                       <span className="opacity-60 font-light flex items-center gap-2">
