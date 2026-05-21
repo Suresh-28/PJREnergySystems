@@ -29,7 +29,7 @@ const offers = [
   },
   {
     icon: ShieldCheck,
-    stat: "25 Yrs",
+    stat: "5 Yrs",
     statLabel: "Performance Warranty",
     title: "Built to Outlast",
     desc: "Tier-1 panels guaranteed to deliver 85% output even after 25 years of Indian sun, rain, and storms.",
@@ -63,7 +63,7 @@ export function OffersSection() {
             Designed to reduce electricity bills for decades.
           </h2>
           <p className="mt-6 text-muted-foreground text-base md:text-lg max-w-xl font-light">
-            Government-supported rooftop solar with subsidy, EMI, and 25-year savings — engineered around how Indian homes actually live.
+            Government-supported rooftop solar with subsidy, EMI, and decades of savings — engineered around how Indian homes actually live.
           </p>
         </Reveal>
 

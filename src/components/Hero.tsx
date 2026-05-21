@@ -6,7 +6,7 @@ import heroImg from "@/assets/hero-rooftop.jpg";
 const badgeLabels = [
   "₹78,000 Subsidy",
   "EMI Available",
-  "25 Year Warranty",
+  "5 Year Warranty",
   "Net Metering Enabled",
   "PM Surya Ghar Approved",
   "Zero Down Payment",
