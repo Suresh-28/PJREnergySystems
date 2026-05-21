@@ -145,3 +145,22 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
+
+.legal-content h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+.legal-content p { margin-bottom: 0.75rem; }
+.legal-content ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin: 0.75rem 0 1rem;
+}
+.legal-content li { margin-bottom: 0.4rem; }
+.legal-content strong { color: var(--foreground); font-weight: 500; }
+.legal-content a { color: var(--olive, oklch(0.62 0.045 130)); text-decoration: none; }
+.legal-content a:hover { text-decoration: underline; }
