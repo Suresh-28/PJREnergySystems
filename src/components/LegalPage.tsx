@@ -24,12 +24,7 @@ export function LegalPage({ label, title, updated, children }: { label: string; 
         </section>
 
         <section className="py-16 md:py-24 px-6">
-          <div className="max-w-3xl mx-auto prose prose-neutral prose-sm md:prose-base font-light
-            prose-headings:font-light prose-headings:tracking-tight prose-headings:text-foreground
-            prose-h2:mt-12 prose-h2:mb-4 prose-h2:text-2xl
-            prose-p:text-muted-foreground prose-p:leading-relaxed
-            prose-li:text-muted-foreground prose-strong:text-foreground prose-strong:font-medium
-            prose-a:text-olive prose-a:no-underline hover:prose-a:underline">
+          <div className="max-w-3xl mx-auto legal-content font-light text-muted-foreground leading-relaxed space-y-4">
             {children}
           </div>
         </section>
