@@ -116,10 +116,13 @@ export function Footer() {
     <footer className="bg-background py-12 px-6 border-t border-border">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground font-light">
         <div>© {new Date().getFullYear()} PJR Energy Systems. Rooftop solar, considered.</div>
-        <div className="flex gap-6">
-          <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
-          <a href="#" className="hover:text-foreground transition-colors">Terms</a>
-          <a href="#contact" className="hover:text-foreground transition-colors">Contact</a>
+        <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+          <a href="/about" className="hover:text-foreground transition-colors">About</a>
+          <a href="/contact" className="hover:text-foreground transition-colors">Contact</a>
+          <a href="/careers" className="hover:text-foreground transition-colors">Careers</a>
+          <a href="/privacy" className="hover:text-foreground transition-colors">Privacy</a>
+          <a href="/terms" className="hover:text-foreground transition-colors">Terms</a>
+          <a href="/refund" className="hover:text-foreground transition-colors">Refund</a>
         </div>
       </div>
     </footer>
